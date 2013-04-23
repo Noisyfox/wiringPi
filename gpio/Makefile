@@ -25,7 +25,7 @@
 
 #DEBUG	= -g -O0
 DEBUG	= -O2
-CC	= gcc
+CC	= arm-linux-gcc
 INCLUDE	= -I/usr/local/include
 CFLAGS	= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
 

@@ -30,10 +30,11 @@ PREFIX=/local
 
 STATIC=libwiringPi.a
 DYNAMIC=libwiringPi.so.$(VERSION)
+#DYNAMIC=libwiringPi.so
 
 #DEBUG	= -g -O0
 DEBUG	= -O2
-CC	= gcc
+CC	= arm-linux-gcc
 INCLUDE	= -I.
 CFLAGS	= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe -fPIC
 
@@ -67,11 +68,11 @@ $(STATIC):	$(OBJ)
 
 $(DYNAMIC):	$(OBJ)
 	@echo "[Link (Dynamic)]"
-	@$(CC) -shared -Wl,-soname,libwiringPi.so.1 -o libwiringPi.so.1.0 -lpthread $(OBJ)
+	@$(CC) -shared -Wl,-soname,libwiringPi.so -o libwiringPi.so.1.0 -lpthread $(OBJ)
 
 i2c:	$(OBJ) $(OBJ_I2C)
 	@echo "[Link (Dynamic + I2C)]"
-	@$(CC) -shared -Wl,-soname,libwiringPi.so.1 -o libwiringPi.so.1.0 -lpthread $(OBJ) $(OBJ_I2C)
+	@$(CC) -shared -Wl,-soname,libwiringPi.so -o libwiringPi.so.1.0 -lpthread $(OBJ) $(OBJ_I2C)
 
 .c.o:
 	@echo [Compile] $<
@@ -103,8 +104,8 @@ install:	$(DYNAMIC)
 	@install -m 0644 wiringPiSPI.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 wiringPiI2C.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0755 libwiringPi.so.$(VERSION)		  $(DESTDIR)$(PREFIX)/lib
-	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPi.so.$(VERSION) $(DESTDIR)/lib/libwiringPi.so
-	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPi.so.$(VERSION) $(DESTDIR)/lib/libwiringPi.so.1
+	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPi.so $(DESTDIR)/lib/libwiringPi.so
+	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPi.so $(DESTDIR)/lib/libwiringPi.so.1
 	@ldconfig
 
 .PHONEY:	install-static
