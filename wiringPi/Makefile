@@ -21,12 +21,13 @@
 #    along with wiringPi.  If not, see <http://www.gnu.org/licenses/>.
 #################################################################################
 
+CORSS_TOOL_CHAIN=arm-linux
 DYN_VERS_MAJ=1
 DYN_VERS_MIN=0
 
 VERSION=$(DYN_VERS_MAJ).$(DYN_VERS_MIN)
 DESTDIR=/usr
-PREFIX=/local
+PREFIX=/local/$(CORSS_TOOL_CHAIN)
 
 STATIC=libwiringPi.a
 DYNAMIC=libwiringPi.so.$(VERSION)
@@ -34,7 +35,7 @@ DYNAMIC=libwiringPi.so.$(VERSION)
 
 #DEBUG	= -g -O0
 DEBUG	= -O2
-CC	= arm-linux-gcc
+CC	= $(CORSS_TOOL_CHAIN)-gcc
 INCLUDE	= -I.
 CFLAGS	= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe -fPIC
 
@@ -103,9 +104,9 @@ install:	$(DYNAMIC)
 	@install -m 0644 lcd.h			$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 wiringPiSPI.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 wiringPiI2C.h		$(DESTDIR)$(PREFIX)/include
-	@install -m 0755 libwiringPi.so.$(VERSION)		  $(DESTDIR)$(PREFIX)/lib
-	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPi.so $(DESTDIR)/lib/libwiringPi.so
-	@ln -sf $(DESTDIR)$(PREFIX)/lib/libwiringPi.so $(DESTDIR)/lib/libwiringPi.so.1
+	@install -m 0755 libwiringPi.so.$(VERSION)		  $(DESTDIR)/lib
+	@ln -sf $(DESTDIR)/lib/libwiringPi.so $(DESTDIR)$(PREFIX)/lib/libwiringPi.so
+	@ln -sf $(DESTDIR)/lib/libwiringPi.so $(DESTDIR)$(PREFIX)/lib/libwiringPi.so.1
 	@ldconfig
 
 .PHONEY:	install-static

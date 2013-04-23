@@ -26,10 +26,10 @@
 #DEBUG	= -g -O0
 DEBUG	= -O2
 CC	= arm-linux-gcc
-INCLUDE	= -I/usr/local/include
+INCLUDE	= -I/usr/local/arm-linux/include
 CFLAGS	= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
 
-LDFLAGS	= -L/usr/local/lib
+LDFLAGS	= -L/usr/local/arm-linux/lib
 LIBS    = -lwiringPi -lpthread -lm
 
 # May not need to  alter anything below this line
